@@ -24,10 +24,12 @@ submission/
 ## ⚙️ Setup Environment
 
 ### Menggunakan Anaconda
+```
 
 conda create --name bike-rental python=3.9
 conda activate bike-rental
 pip install -r requirements.txt
+```
 
 ### Menggunakan Shell/Terminal (Tanpa Anaconda)
 
