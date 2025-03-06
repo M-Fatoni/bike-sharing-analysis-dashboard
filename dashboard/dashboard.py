@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load data
-df_hour = pd.read_csv("hour.csv")
+df_hour = pd.read_csv("dashboard/hour.csv")
 
 # Sidebar navigation
 st.sidebar.title("📊 Bike Sharing Dashboard")
