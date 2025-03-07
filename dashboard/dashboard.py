@@ -26,13 +26,23 @@ with st.sidebar:
     max_date = df_hour["dteday"].max()
     
     start_date, end_date = st.date_input(
-        label="Pilih Rentag Waktu", min_value=min_date,
+        label="Pilih Rentang Waktu", min_value=min_date,
         max_value=max_date,
         value=[min_date, max_date]
     )
 
+    user_type = st.radio(
+        "Pilih Jenis Pengguna",
+        options=["Semua", "Casual", "Registered"]
+    )
+
 # Filter data sesuai rentang tanggal
 main_df = df_hour[(df_hour["dteday"] >= str(start_date)) & (df_hour["dteday"] <= str(end_date))]
+
+if user_type == "Casual":
+    main_df["cnt"] = main_df["casual"]
+elif user_type == "Registered":
+    main_df["cnt"] = main_df["registered"]
 
 # ----- MAINPAGE -----
 st.title(":bar_chart: Bike-Sharing Dashboard")
@@ -52,13 +62,22 @@ with col3:
 
 st.markdown("---")
 
-# ----- BARPLOT -----
+# ----- BARPLOT (Total Rides per Day) -----
 fig, ax = plt.subplots(figsize=(12, 6))
 sns.barplot(data=main_df, x='dteday', y='cnt', color='skyblue', ax=ax)
 ax.set_title("Total Rides per Day")
 ax.set_xlabel("Date")
 ax.set_ylabel("Total Rides")
 plt.xticks(rotation=90)
+st.pyplot(fig)
+
+# ----- LINEPLOT (Rides per Hour) -----
+fig, ax = plt.subplots(figsize=(12, 6))
+hourly_avg = main_df.groupby("hr")["cnt"].mean()
+sns.lineplot(x=hourly_avg.index, y=hourly_avg.values, marker="o", ax=ax)
+ax.set_title("Rata-rata Peminjaman Sepeda per Jam")
+ax.set_xlabel("Jam")
+ax.set_ylabel("Rata-rata Peminjaman")
 st.pyplot(fig)
 
 st.caption('Copyright (c), created by Tonsbray')
