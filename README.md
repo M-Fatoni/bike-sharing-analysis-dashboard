@@ -45,12 +45,3 @@ pip install -r requirements.txt
 ## 🚀 Menjalankan Dashboard Streamlit
 
 streamlit run dashboard/dashboard.py
-
-## 📊 Fitur Analisis
-
-- ✅ Peminjaman Sepeda Berdasarkan Musim
-- ✅ Pola Penyewaan Sepeda Berdasarkan Waktu
-- ✅ Perbedaan Penyewaan antara Hari Kerja & Hari Libur
-- ✅ Dampak Kondisi Cuaca terhadap Penyewaan Sepeda
-- ✅ Tren Penyewaan Sepeda Berdasarkan Jam
-- ✅ Kesimpulan & Strategi Bisnis
