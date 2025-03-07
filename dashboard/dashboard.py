@@ -26,7 +26,7 @@ with st.sidebar:
     max_date = df_hour["dteday"].max()
     
     start_date, end_date = st.date_input(
-        label="Date Filter", min_value=min_date,
+        label="Pilih Rentag Waktu", min_value=min_date,
         max_value=max_date,
         value=[min_date, max_date]
     )
@@ -58,10 +58,10 @@ sns.barplot(data=main_df, x='dteday', y='cnt', color='skyblue', ax=ax)
 ax.set_title("Total Rides per Day")
 ax.set_xlabel("Date")
 ax.set_ylabel("Total Rides")
-plt.xticks(rotation=45)
+plt.xticks(rotation=90)
 st.pyplot(fig)
 
-st.caption('Copyright (c), created by Bike-Sharing Team')
+st.caption('Copyright (c), created by Tonsbray')
 
 # ----- HIDE STREAMLIT STYLE -----
 hide_st_style = """
