@@ -64,22 +64,22 @@ st.markdown("---")
 
 # ----- BARPLOT (Total Rides per Day) -----
 fig, ax = plt.subplots(figsize=(12, 6))
-main_df["date_str"] = main_df["dteday"].dt.strftime('%Y-%m-%d')  # Hapus waktu
+main_df["date_str"] = main_df["dteday"].dt.strftime('%Y-%m-%d')  
 sns.barplot(data=main_df, x="date_str", y="cnt", color="skyblue", ax=ax)
 ax.set_title("Total Rides per Day")
 ax.set_xlabel("Date")
 ax.set_ylabel("Total Rides")
-plt.xticks(rotation=90)
+plt.xticks(rotation=75)
 st.pyplot(fig)
 
 # ----- LINEPLOT (Rides per Hour) -----
 fig, ax = plt.subplots(figsize=(12, 6))
-hourly_avg = main_df.groupby("hr")["cnt"].mean().reindex(range(24), fill_value=0)  # Pastikan 0-23 selalu muncul
+hourly_avg = main_df.groupby("hr")["cnt"].mean().reindex(range(24), fill_value=0)  
 sns.lineplot(x=hourly_avg.index, y=hourly_avg.values, marker="o", ax=ax)
 ax.set_title("Rata-rata Peminjaman Sepeda per Jam")
 ax.set_xlabel("Jam")
 ax.set_ylabel("Rata-rata Peminjaman")
-ax.set_xticks(range(24))  # Pastikan semua jam muncul 0-23
+ax.set_xticks(range(24))  
 st.pyplot(fig)
 
 st.caption('Copyright (c), created by Tonsbray')
