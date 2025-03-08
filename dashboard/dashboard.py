@@ -57,12 +57,25 @@ df_grouped = main_df.groupby("workingday")[["registered", "casual"]].sum().reset
 df_grouped["workingday"] = df_grouped["workingday"].map({1: "Hari Kerja", 0: "Hari Libur"})
 df_melted = df_grouped.melt(id_vars="workingday", var_name="User Type", value_name="Total Rentals")
 
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.barplot(data=df_melted, x="workingday", y="Total Rentals", hue="User Type", palette=["#6ee5c7", "#e56e8c"], ax=ax)
-ax.set_xlabel("Hari")
-ax.set_ylabel("Jumlah Penyewaan")
-ax.set_title("Perbedaan Penyewaan Sepeda pada Hari Kerja dan Hari Libur")
-st.pyplot(fig)
+fig1, ax1 = plt.subplots(figsize=(8, 5))
+sns.barplot(data=df_melted, x="workingday", y="Total Rentals", hue="User Type", palette=["#6ee5c7", "#e56e8c"], ax=ax1)
+ax1.set_xlabel("Hari")
+ax1.set_ylabel("Jumlah Penyewaan")
+ax1.set_title("Perbedaan Penyewaan Sepeda pada Hari Kerja dan Hari Libur")
+st.pyplot(fig1)
+
+st.markdown("---")
+
+# ----- LINEPLOT: Tren Penyewaan Sepeda Berdasarkan Jam -----
+df_hourly_trend = main_df.groupby("hr")[["cnt"]].sum().reset_index()
+
+fig2, ax2 = plt.subplots(figsize=(10, 5))
+sns.lineplot(data=df_hourly_trend, x="hr", y="cnt", marker="o", color="#4C72B0", ax=ax2)
+ax2.set_xticks(range(0, 24))  # Pastikan semua jam (0-23) muncul
+ax2.set_xlabel("Jam")
+ax2.set_ylabel("Jumlah Penyewaan")
+ax2.set_title("Tren Penyewaan Sepeda Berdasarkan Jam")
+st.pyplot(fig2)
 
 st.caption('Copyright (c), created by Tonsbray')
 
