@@ -14,6 +14,8 @@ import streamlit as st
 df_hour = pd.read_csv("dashboard/hour.csv")
 df_hour['dteday'] = pd.to_datetime(df_hour['dteday'])
 
+df_hour['year'] = df_hour['dteday'].dt.year  # Tambahkan kolom tahun untuk analisis tren
+
 st.set_page_config(page_title="Bike-sharing Dashboard",
                    page_icon=":bar_chart:",
                    layout="wide")
@@ -52,24 +54,22 @@ with col3:
 
 st.markdown("---")
 
-# ----- BARPLOT: Total Rides per Day -----
+# ----- LINEPLOT Tren Penyewaan Sepeda dari Tahun ke Tahun -----
 fig, ax = plt.subplots(figsize=(12, 6))
-sns.barplot(data=main_df, x=main_df['dteday'].dt.strftime('%Y-%m-%d'), y='cnt', color='skyblue', ax=ax)
-ax.set_title("Total Rides per Day")
-ax.set_xlabel("Date")
+sns.lineplot(data=df_hour.groupby('year')['cnt'].sum().reset_index(), x='year', y='cnt', marker='o', ax=ax)
+ax.set_title("Tren Penyewaan Sepeda dari Tahun ke Tahun")
+ax.set_xlabel("Tahun")
 ax.set_ylabel("Total Rides")
-plt.xticks(rotation=90)
 st.pyplot(fig)
 
-# ----- LINEPLOT: Trend of Rides by Hour -----
-st.markdown("### Tren Penyewaan Sepeda berdasarkan Jam")
-fig2, ax2 = plt.subplots(figsize=(12, 6))
-sns.lineplot(data=df_hour.groupby('hr').mean().reset_index(), x='hr', y='cnt', marker='o', ax=ax2)
-ax2.set_title("Average Rides by Hour")
-ax2.set_xlabel("Hour of the Day")
-ax2.set_ylabel("Average Total Rides")
-ax2.set_xticks(range(24))  
-st.pyplot(fig2)
+# ----- LINEPLOT Tren Penyewaan Sepeda berdasarkan Jam -----
+fig, ax = plt.subplots(figsize=(12, 6))
+sns.lineplot(data=main_df.groupby('hr')['cnt'].mean().reset_index(), x='hr', y='cnt', marker='o', ax=ax)
+ax.set_title("Tren Penyewaan Sepeda berdasarkan Jam")
+ax.set_xlabel("Jam")
+ax.set_ylabel("Rata-rata Total Penyewaan")
+ax.set_xticks(range(24))  # Menampilkan semua jam dari 0-23
+st.pyplot(fig)
 
 st.caption('Copyright (c), created by Tonsbray')
 
