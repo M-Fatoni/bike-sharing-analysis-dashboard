@@ -31,18 +31,8 @@ with st.sidebar:
         value=[min_date, max_date]
     )
 
-    user_type = st.radio(
-        "Pilih Jenis Pengguna",
-        options=["Semua", "Casual", "Registered"]
-    )
-
 # Filter data sesuai rentang tanggal
-main_df = df_hour[(df_hour["dteday"] >= str(start_date)) & (df_hour["dteday"] <= str(end_date))].copy()
-
-if user_type == "Casual":
-    main_df["cnt"] = main_df["casual"]
-elif user_type == "Registered":
-    main_df["cnt"] = main_df["registered"]
+main_df = df_hour[(df_hour["dteday"] >= str(start_date)) & (df_hour["dteday"] <= str(end_date))]
 
 # ----- MAINPAGE -----
 st.title(":bar_chart: Bike-Sharing Dashboard")
@@ -62,25 +52,24 @@ with col3:
 
 st.markdown("---")
 
-# ----- BARPLOT (Total Rides per Day) -----
+# ----- BARPLOT: Total Rides per Day -----
 fig, ax = plt.subplots(figsize=(12, 6))
-main_df["date_str"] = main_df["dteday"].dt.strftime('%Y-%m-%d')  
-sns.barplot(data=main_df, x="date_str", y="cnt", color="skyblue", ax=ax)
+sns.barplot(data=main_df, x=main_df['dteday'].dt.strftime('%Y-%m-%d'), y='cnt', color='skyblue', ax=ax)
 ax.set_title("Total Rides per Day")
 ax.set_xlabel("Date")
 ax.set_ylabel("Total Rides")
-plt.xticks(rotation=75)
+plt.xticks(rotation=90)
 st.pyplot(fig)
 
-# ----- LINEPLOT (Rides per Hour) -----
-fig, ax = plt.subplots(figsize=(12, 6))
-hourly_avg = main_df.groupby("hr")["cnt"].mean().reindex(range(24), fill_value=0)  
-sns.lineplot(x=hourly_avg.index, y=hourly_avg.values, marker="o", ax=ax)
-ax.set_title("Rata-rata Peminjaman Sepeda per Jam")
-ax.set_xlabel("Jam")
-ax.set_ylabel("Rata-rata Peminjaman")
-ax.set_xticks(range(24))  
-st.pyplot(fig)
+# ----- LINEPLOT: Trend of Rides by Hour -----
+st.markdown("### Tren Penyewaan Sepeda berdasarkan Jam")
+fig2, ax2 = plt.subplots(figsize=(12, 6))
+sns.lineplot(data=df_hour.groupby('hr').mean().reset_index(), x='hr', y='cnt', marker='o', ax=ax2)
+ax2.set_title("Average Rides by Hour")
+ax2.set_xlabel("Hour of the Day")
+ax2.set_ylabel("Average Total Rides")
+ax2.set_xticks(range(24))  
+st.pyplot(fig2)
 
 st.caption('Copyright (c), created by Tonsbray')
 
