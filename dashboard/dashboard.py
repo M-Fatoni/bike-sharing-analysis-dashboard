@@ -66,15 +66,33 @@ st.pyplot(fig1)
 
 st.markdown("---")
 
-# ----- LINEPLOT: Tren Penyewaan Sepeda Berdasarkan Jam -----
-df_hourly_trend = main_df.groupby("hr")[["cnt"]].sum().reset_index()
+# ----- LINEPLOT: Rata-rata Peminjaman Sepeda per Jam -----
+df_hourly_trend = main_df.groupby("hr")[["cnt"]].mean().reset_index()
+
+# Mencari dua jam dengan peminjaman tertinggi
+peak_hours = df_hourly_trend.nlargest(2, "cnt")["hr"].values
 
 fig2, ax2 = plt.subplots(figsize=(10, 5))
-sns.lineplot(data=df_hourly_trend, x="hr", y="cnt", marker="o", color="#4C72B0", ax=ax2)
+sns.lineplot(data=df_hourly_trend, x="hr", y="cnt", marker="o", color="#29579d", ax=ax2)
+
 ax2.set_xticks(range(0, 24))  # Pastikan semua jam (0-23) muncul
+ax2.set_ylim(ymin=0)  # Pastikan skala y mulai dari nol
 ax2.set_xlabel("Jam")
-ax2.set_ylabel("Jumlah Penyewaan")
-ax2.set_title("Tren Penyewaan Sepeda Berdasarkan Jam")
+ax2.set_ylabel("Rata-rata Peminjaman")
+ax2.set_title("Rata-rata Peminjaman Sepeda per Jam")
+
+# Tambahkan garis vertikal pada jam-jam dengan peminjaman tertinggi
+for peak in peak_hours:
+    ax2.axvline(peak, color='#8aaccf', linestyle='--', label=f'Puncak Peminjaman ({peak}:00)')
+
+# Tambahkan grid
+ax2.grid(linestyle=':', color='gray', linewidth=0.5)
+
+# Tambahkan legenda (pastikan tidak duplikat)
+handles, labels = ax2.get_legend_handles_labels()
+by_label = dict(zip(labels, handles))
+ax2.legend(by_label.values(), by_label.keys())
+
 st.pyplot(fig2)
 
 st.caption('Copyright (c), created by Tonsbray')
