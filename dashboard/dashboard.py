@@ -75,8 +75,8 @@ peak_hours = df_hourly_trend.nlargest(2, "cnt")["hr"].values
 fig2, ax2 = plt.subplots(figsize=(10, 5))
 sns.lineplot(data=df_hourly_trend, x="hr", y="cnt", marker="o", color="#29579d", ax=ax2)
 
-ax2.set_xticks(range(0, 24))  # Pastikan semua jam (0-23) muncul
-ax2.set_ylim(ymin=0)  # Pastikan skala y mulai dari nol
+ax2.set_xticks(range(0, 24))  
+ax2.set_ylim(ymin=0)  
 ax2.set_xlabel("Jam")
 ax2.set_ylabel("Rata-rata Peminjaman")
 ax2.set_title("Rata-rata Peminjaman Sepeda per Jam")
@@ -87,6 +87,10 @@ for peak in peak_hours:
 
 # Tambahkan grid
 ax2.grid(linestyle=':', color='gray', linewidth=0.5)
+
+# Menghapus garis border di atas dan kanan plot
+ax2.spines['top'].set_color('none')
+ax2.spines['right'].set_color('none')
 
 # Tambahkan legenda (pastikan tidak duplikat)
 handles, labels = ax2.get_legend_handles_labels()
