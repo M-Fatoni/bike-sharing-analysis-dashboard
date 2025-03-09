@@ -60,7 +60,7 @@ df_melted = df_grouped.melt(id_vars="workingday", var_name="User Type", value_na
 fig1, ax1 = plt.subplots(figsize=(8, 5))
 sns.barplot(data=df_melted, x="workingday", y="Total Rentals", hue="User Type", palette=["#6ee5c7", "#e56e8c"], ax=ax1)
 ax1.set_xlabel("Hari")
-ax1.set_ylabel("Jumlah Penyewaan")
+ax1.set_ylabel("Jumlah Penyewaan\n(Juta)")
 ax1.set_title("Perbedaan Penyewaan Sepeda pada Hari Kerja dan Hari Libur")
 st.pyplot(fig1)
 
